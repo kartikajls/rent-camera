@@ -118,6 +118,7 @@ func (u *userUsecase) GetAll() ([]dto.UserResponse, error) {
 				UserID:        user.UserID,
 				Username:      user.Username,
 				Email:         user.Email,
+				Role:          user.Role,
 				DepositAmount: user.DepositAmount,
 			},
 		)
