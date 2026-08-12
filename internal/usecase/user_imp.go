@@ -119,6 +119,7 @@ func (u *userUsecase) GetAll() ([]dto.UserResponse, error) {
 				Username:      user.Username,
 				Email:         user.Email,
 				Role:          user.Role,
+				CreatedAt:     user.CreatedAt,
 				DepositAmount: user.DepositAmount,
 			},
 		)
