@@ -1,0 +1,275 @@
+openapi: 3.0.3
+
+info:
+  title: Rent Camera API
+  description: REST API for Camera Rental System
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local server
+
+tags:
+  - name: Users
+    description: User management
+  - name: Cameras
+    description: Camera management
+  - name: Rental Orders
+    description: Rental order management
+  - name: Payments
+    description: Payment management
+  - name: Email Notifications
+    description: Email notification management
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    StandardResponse:
+      type: object
+      properties:
+        responseCode:
+          type: integer
+          example: 200
+        responseMessage:
+          type: string
+          example: Success
+        responseData:
+          nullable: true
+          example: {}
+
+    ErrorResponse:
+      type: object
+      properties:
+        responseCode:
+          type: integer
+          example: 400
+        responseMessage:
+          type: string
+          example: Bad Request
+        responseData:
+          nullable: true
+          example: null
+
+    UserResponse:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        username:
+          type: string
+          example: john_doe
+        email:
+          type: string
+          example: john@example.com
+        deposit_amount:
+          type: number
+          format: double
+          example: 0
+        created_at:
+          type: string
+          format: date-time
+
+    RegisterRequest:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          example: john_doe
+        email:
+          type: string
+          format: email
+          example: john@example.com
+        password:
+          type: string
+          example: password123
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: john@example.com
+        password:
+          type: string
+          example: password123
+
+    LoginResponse:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        username:
+          type: string
+          example: john_doe
+        email:
+          type: string
+          example: john@example.com
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIs...
+
+paths:
+
+  /users/register:
+    post:
+      tags:
+        - Users
+      summary: Register user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+
+      responses:
+        '201':
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      responseData:
+                        $ref: '#/components/schemas/UserResponse'
+
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/login:
+    post:
+      tags:
+        - Users
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      responseData:
+                        $ref: '#/components/schemas/LoginResponse'
+
+        '401':
+          description: Invalid email or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get users
+      security:
+        - BearerAuth: []
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      responseData:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UserResponse'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by ID
+      security:
+        - BearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      responseData:
+                        $ref: '#/components/schemas/UserResponse'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
