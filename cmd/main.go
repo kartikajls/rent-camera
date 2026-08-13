@@ -29,15 +29,17 @@ func main() {
 	// Repository
 	userRepository := repository.NewUserRepository(db)
 	topUpRepository := repository.NewTopUpRepository(db)
+	cameraRepository := repository.NewCameraRepository(db)
 
 	// Usecase
 	userUsecase := usecase.NewUserUsecase(userRepository)
 	topUpUsecase := usecase.NewTopUpUsecase(topUpRepository, userRepository)
+	cameraUsecase := usecase.NewCameraUsecase(cameraRepository)
 
 	// Handler
 	userHandler := handler.NewUserHandler(userUsecase)
-
 	topUpHandler := handler.NewTopUpHandler(topUpUsecase)
+	cameraHandler := handler.NewCameraHandler(cameraUsecase)
 
 	// Echo
 	e := echo.New()
@@ -47,6 +49,7 @@ func main() {
 		e,
 		userHandler,
 		topUpHandler,
+		cameraHandler,
 	)
 
 	// Start Server

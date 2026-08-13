@@ -11,6 +11,7 @@ func SetupRoutes(
 	e *echo.Echo,
 	userHandler handler.UserHandler,
 	topUpHandler handler.TopUpHandler,
+	cameraHandler handler.CameraHandler,
 ) {
 
 	// =========================================
@@ -33,10 +34,14 @@ func SetupRoutes(
 
 	user.GET("/:id", userHandler.GetByID)
 
-	// Top Up User
+	// Top Up endpoint
 	user.POST("/topup", topUpHandler.Create)
 	user.GET("/topup", topUpHandler.GetByUserID)
 	user.GET("/topup/:id", topUpHandler.GetByID)
+
+	// Camera endpoint
+	user.GET("/cameras", cameraHandler.GetAll)
+	user.GET("/cameras/:id", cameraHandler.GetByID)
 
 	// =========================================
 	// ADMIN ROUTES
@@ -50,11 +55,18 @@ func SetupRoutes(
 	)
 
 	// Management
-	admin.GET("/users", userHandler.GetAll)
+	admin.GET("/admin", userHandler.GetAll)
 
-	// Top Up Management
+	// Top Up endpoint
 	admin.GET("/topups", topUpHandler.GetAll)
 	admin.GET("/topups/:id", topUpHandler.GetByID)
 	admin.PUT("/topups/:id/approve", topUpHandler.Approve)
 	admin.PUT("/topups/:id/reject", topUpHandler.Reject)
+
+	// Camera endpoint
+	admin.GET("/cameras", cameraHandler.GetAll)
+	admin.GET("/cameras/:id", cameraHandler.GetByID)
+	admin.POST("/cameras", cameraHandler.Create)
+	admin.PUT("/cameras/:id", cameraHandler.Update)
+	admin.DELETE("/cameras/:id", cameraHandler.Delete)
 }

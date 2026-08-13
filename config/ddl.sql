@@ -85,11 +85,6 @@ FOREIGN KEY (rental_order_id)
 REFERENCES rental_orders(rental_order_id)
 ON DELETE CASCADE;
 
-ALTER TABLE payments 
-ADD CONSTRAINT fk_payment_verified_by
-FOREIGN KEY (verified_by)
-REFERENCES users(user_id)
-ON DELETE SET NULL;
 
 CREATE TABLE top_ups (
     top_up_id BIGSERIAL PRIMARY KEY,
@@ -105,10 +100,6 @@ ADD CONSTRAINT fk_topups_user
 FOREIGN KEY (user_id)
 REFERENCES users(user_id)
 ON DELETE CASCADE;
-
-ALTER TABLE top_ups
-ADD CONSTRAINT check_topup_amount
-CHECK (amount > 0);
 
 
 select * from users u ;
