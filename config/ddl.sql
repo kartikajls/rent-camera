@@ -75,13 +75,8 @@ CREATE TABLE payments (
     amount NUMERIC(15,2) NOT NULL,
     payment_method VARCHAR(50) NOT NULL,
     payment_status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
-    payment_proof TEXT,
-    payment_date TIMESTAMP NULL,
-    verified_at TIMESTAMP NULL,
-    verified_by BIGINT NULL,
-    transaction_id VARCHAR(150) UNIQUE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    payment_date TIMESTAMP,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 ALTER TABLE payments 
@@ -94,35 +89,6 @@ ALTER TABLE payments
 ADD CONSTRAINT fk_payment_verified_by
 FOREIGN KEY (verified_by)
 REFERENCES users(user_id)
-ON DELETE SET NULL;
-
-
-CREATE TABLE email_notifications (
-    notification_id BIGSERIAL PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    rental_order_id BIGINT NULL,
-    email VARCHAR(255) NOT NULL,
-    notification_type VARCHAR(50) NOT NULL,
-    subject VARCHAR(255) NOT NULL,
-    status VARCHAR(30) NOT NULL DEFAULT 'pending',
-    provider VARCHAR(50),
-    provider_message_id VARCHAR(255),
-    error_message TEXT,
-    sent_at TIMESTAMP NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-ALTER TABLE email_notifications
-ADD CONSTRAINT fk_email_notifications_user
-FOREIGN KEY (user_id)
-REFERENCES users(user_id)
-ON DELETE CASCADE;
-
-ALTER TABLE email_notifications
-ADD CONSTRAINT fk_email_notifications_order
-FOREIGN KEY (rental_order_id)
-REFERENCES rental_orders(rental_order_id)
 ON DELETE SET NULL;
 
 CREATE TABLE top_ups (

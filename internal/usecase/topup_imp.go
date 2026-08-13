@@ -10,25 +10,26 @@ import (
 )
 
 type topUpUsecase struct {
-	topUpRepository          repository.TopUpRepository
-	userRepository           repository.UserRepository
-	emailNotificationUsecase EmailNotificationUsecase
+	topUpRepository repository.TopUpRepository
+	userRepository  repository.UserRepository
 }
 
 func NewTopUpUsecase(
 	topUpRepository repository.TopUpRepository,
 	userRepository repository.UserRepository,
-	emailNotificationUsecase EmailNotificationUsecase,
 ) TopUpUsecase {
 	return &topUpUsecase{
-		topUpRepository:          topUpRepository,
-		userRepository:           userRepository,
-		emailNotificationUsecase: emailNotificationUsecase,
+		topUpRepository: topUpRepository,
+		userRepository:  userRepository,
 	}
 }
 
 // USER - CREATE TOP UP
 func (u *topUpUsecase) Create(userID int64, request dto.CreateTopUpRequest) (*dto.TopUpResponse, error) {
+
+	if userID <= 0 {
+		return nil, errors.New("invalid user id")
+	}
 
 	if request.Amount <= 0 {
 		return nil, errors.New("amount must be greater than 0")
@@ -56,6 +57,10 @@ func (u *topUpUsecase) Create(userID int64, request dto.CreateTopUpRequest) (*dt
 // GET BY ID
 func (u *topUpUsecase) GetByID(id int64) (*dto.TopUpResponse, error) {
 
+	if id <= 0 {
+		return nil, errors.New("invalid top up id")
+	}
+
 	topUp, err := u.topUpRepository.GetByID(id)
 
 	if err != nil {
@@ -73,6 +78,10 @@ func (u *topUpUsecase) GetByID(id int64) (*dto.TopUpResponse, error) {
 // USER - GET BY USER ID
 func (u *topUpUsecase) GetByUserID(userID int64) ([]dto.TopUpResponse, error) {
 
+	if userID <= 0 {
+		return nil, errors.New("invalid user id")
+	}
+
 	topUps, err := u.topUpRepository.GetByUserID(userID)
 
 	if err != nil {
@@ -86,6 +95,7 @@ func (u *topUpUsecase) GetByUserID(userID int64) ([]dto.TopUpResponse, error) {
 	)
 
 	for _, topUp := range topUps {
+
 		responses = append(
 			responses,
 			dto.TopUpResponse{
@@ -116,6 +126,7 @@ func (u *topUpUsecase) GetAll() ([]dto.TopUpResponse, error) {
 	)
 
 	for _, topUp := range topUps {
+
 		responses = append(
 			responses,
 			dto.TopUpResponse{
@@ -132,6 +143,10 @@ func (u *topUpUsecase) GetAll() ([]dto.TopUpResponse, error) {
 
 // ADMIN - UPDATE STATUS
 func (u *topUpUsecase) UpdateStatus(id int64, status string) error {
+
+	if id <= 0 {
+		return errors.New("invalid top up id")
+	}
 
 	status = strings.ToLower(
 		strings.TrimSpace(status),
@@ -153,6 +168,10 @@ func (u *topUpUsecase) UpdateStatus(id int64, status string) error {
 // ADMIN - APPROVE
 func (u *topUpUsecase) Approve(id int64) error {
 
+	if id <= 0 {
+		return errors.New("invalid top up id")
+	}
+
 	// Cari top up
 	topUp, err := u.topUpRepository.GetByID(id)
 
@@ -160,7 +179,7 @@ func (u *topUpUsecase) Approve(id int64) error {
 		return errors.New("top up not found")
 	}
 
-	// Pastikan masih pending
+	// Hanya pending yang boleh di-approve
 	if topUp.Status != "pending" {
 		return errors.New(
 			"top up has already been processed",
@@ -194,18 +213,17 @@ func (u *topUpUsecase) Approve(id int64) error {
 		return err
 	}
 
-	_ = u.emailNotificationUsecase.SendTopUpSuccess(
-		user.UserID,
-		user.Email,
-		topUp.Amount,
-	)
-
 	return nil
 }
 
 // ADMIN - REJECT
 func (u *topUpUsecase) Reject(id int64) error {
 
+	if id <= 0 {
+		return errors.New("invalid top up id")
+	}
+
+	// Cari top up
 	topUp, err := u.topUpRepository.GetByID(id)
 
 	if err != nil {
@@ -219,12 +237,7 @@ func (u *topUpUsecase) Reject(id int64) error {
 		)
 	}
 
-	user, err := u.userRepository.GetByID(topUp.UserID)
-
-	if err != nil {
-		return errors.New("user not found")
-	}
-
+	// Ubah status menjadi failed
 	err = u.topUpRepository.UpdateStatus(
 		id,
 		"failed",
@@ -233,12 +246,6 @@ func (u *topUpUsecase) Reject(id int64) error {
 	if err != nil {
 		return err
 	}
-
-	_ = u.emailNotificationUsecase.SendTopUpFailed(
-		user.UserID,
-		user.Email,
-		topUp.Amount,
-	)
 
 	return nil
 }

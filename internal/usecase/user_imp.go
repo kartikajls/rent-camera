@@ -10,17 +10,14 @@ import (
 )
 
 type userUsecase struct {
-	userRepository           repository.UserRepository
-	emailNotificationUsecase EmailNotificationUsecase
+	userRepository repository.UserRepository
 }
 
 func NewUserUsecase(
 	userRepository repository.UserRepository,
-	emailNotificationUsecase EmailNotificationUsecase,
 ) UserUsecase {
 	return &userUsecase{
-		userRepository:           userRepository,
-		emailNotificationUsecase: emailNotificationUsecase,
+		userRepository: userRepository,
 	}
 }
 
@@ -42,7 +39,9 @@ func (u *userUsecase) Register(request dto.RegisterRequest) (*dto.RegisterRespon
 	}
 
 	// Cek email sudah terdaftar
-	existingUser, err := u.userRepository.GetByEmail(request.Email)
+	existingUser, err := u.userRepository.GetByEmail(
+		request.Email,
+	)
 
 	if err == nil && existingUser != nil {
 		return nil, errors.New("email already registered")
@@ -64,19 +63,7 @@ func (u *userUsecase) Register(request dto.RegisterRequest) (*dto.RegisterRespon
 		return nil, err
 	}
 
-	// SEND REGISTRATION EMAIL
-
-	// Email gagal tidak membatalkan registrasi.
-	// Status email akan disimpan sebagai failed
-	// oleh EmailNotificationUsecase.
-	_ = u.emailNotificationUsecase.SendRegistrationEmail(
-		user.UserID,
-		user.Email,
-		user.Username,
-	)
-
-	// RESPONSE
-
+	// Response
 	return &dto.RegisterResponse{
 		UserID:        user.UserID,
 		Username:      user.Username,
@@ -88,13 +75,20 @@ func (u *userUsecase) Register(request dto.RegisterRequest) (*dto.RegisterRespon
 
 func (u *userUsecase) Login(request dto.LoginRequest) (*dto.LoginResponse, error) {
 
-	user, err := u.userRepository.GetByEmail(request.Email)
+	user, err := u.userRepository.GetByEmail(
+		request.Email,
+	)
+
 	if err != nil {
-		return nil, errors.New("email or password is incorrect")
+		return nil, errors.New(
+			"email or password is incorrect",
+		)
 	}
 
 	if user.Password != request.Password {
-		return nil, errors.New("email or password is incorrect")
+		return nil, errors.New(
+			"email or password is incorrect",
+		)
 	}
 
 	// Generate JWT
@@ -120,6 +114,7 @@ func (u *userUsecase) Login(request dto.LoginRequest) (*dto.LoginResponse, error
 func (u *userUsecase) GetByID(userID int64) (*dto.UserResponse, error) {
 
 	user, err := u.userRepository.GetByID(userID)
+
 	if err != nil {
 		return nil, err
 	}
