@@ -35,9 +35,7 @@ func (r *topUpRepository) GetByID(id int64) (*entity.TopUp, error) {
 	return &topUp, nil
 }
 
-func (r *topUpRepository) GetByUserID(
-	userID int64,
-) ([]entity.TopUp, error) {
+func (r *topUpRepository) GetByUserID(userID int64) ([]entity.TopUp, error) {
 
 	var topUps []entity.TopUp
 
@@ -60,10 +58,7 @@ func (r *topUpRepository) GetAll() ([]entity.TopUp, error) {
 	return topUps, err
 }
 
-func (r *topUpRepository) UpdateStatus(
-	id int64,
-	status string,
-) error {
+func (r *topUpRepository) UpdateStatus(id int64, status string) error {
 
 	return r.db.
 		Model(&entity.TopUp{}).

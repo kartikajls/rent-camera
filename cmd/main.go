@@ -10,6 +10,7 @@ import (
 	"p2-ip-kartikajls/internal/handler"
 	"p2-ip-kartikajls/internal/repository"
 	"p2-ip-kartikajls/internal/router"
+	"p2-ip-kartikajls/internal/service"
 	"p2-ip-kartikajls/internal/usecase"
 )
 
@@ -29,10 +30,17 @@ func main() {
 	// Repository
 	userRepository := repository.NewUserRepository(db)
 	topUpRepository := repository.NewTopUpRepository(db)
+	emailNotificationRepository := repository.NewEmailNotificationRepository(db)
+
+	//Service
+	emailService := service.NewBrevoEmailService()
+
+	//Email Notification
+	emailNotificationUsecase := usecase.NewEmailNotificationUsecase(emailNotificationRepository, emailService)
 
 	// Usecase
-	userUsecase := usecase.NewUserUsecase(userRepository)
-	topUpUsecase := usecase.NewTopUpUsecase(topUpRepository, userRepository)
+	userUsecase := usecase.NewUserUsecase(userRepository, emailNotificationUsecase)
+	topUpUsecase := usecase.NewTopUpUsecase(topUpRepository, userRepository, emailNotificationUsecase)
 
 	// Handler
 	userHandler := handler.NewUserHandler(userUsecase)

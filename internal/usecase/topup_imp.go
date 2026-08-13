@@ -10,28 +10,25 @@ import (
 )
 
 type topUpUsecase struct {
-	topUpRepository repository.TopUpRepository
-	userRepository  repository.UserRepository
+	topUpRepository          repository.TopUpRepository
+	userRepository           repository.UserRepository
+	emailNotificationUsecase EmailNotificationUsecase
 }
 
 func NewTopUpUsecase(
 	topUpRepository repository.TopUpRepository,
 	userRepository repository.UserRepository,
+	emailNotificationUsecase EmailNotificationUsecase,
 ) TopUpUsecase {
 	return &topUpUsecase{
-		topUpRepository: topUpRepository,
-		userRepository:  userRepository,
+		topUpRepository:          topUpRepository,
+		userRepository:           userRepository,
+		emailNotificationUsecase: emailNotificationUsecase,
 	}
 }
 
-// =====================================================
 // USER - CREATE TOP UP
-// =====================================================
-
-func (u *topUpUsecase) Create(
-	userID int64,
-	request dto.CreateTopUpRequest,
-) (*dto.TopUpResponse, error) {
+func (u *topUpUsecase) Create(userID int64, request dto.CreateTopUpRequest) (*dto.TopUpResponse, error) {
 
 	if request.Amount <= 0 {
 		return nil, errors.New("amount must be greater than 0")
@@ -56,13 +53,8 @@ func (u *topUpUsecase) Create(
 	}, nil
 }
 
-// =====================================================
 // GET BY ID
-// =====================================================
-
-func (u *topUpUsecase) GetByID(
-	id int64,
-) (*dto.TopUpResponse, error) {
+func (u *topUpUsecase) GetByID(id int64) (*dto.TopUpResponse, error) {
 
 	topUp, err := u.topUpRepository.GetByID(id)
 
@@ -78,13 +70,8 @@ func (u *topUpUsecase) GetByID(
 	}, nil
 }
 
-// =====================================================
 // USER - GET BY USER ID
-// =====================================================
-
-func (u *topUpUsecase) GetByUserID(
-	userID int64,
-) ([]dto.TopUpResponse, error) {
+func (u *topUpUsecase) GetByUserID(userID int64) ([]dto.TopUpResponse, error) {
 
 	topUps, err := u.topUpRepository.GetByUserID(userID)
 
@@ -113,10 +100,7 @@ func (u *topUpUsecase) GetByUserID(
 	return responses, nil
 }
 
-// =====================================================
 // ADMIN - GET ALL
-// =====================================================
-
 func (u *topUpUsecase) GetAll() ([]dto.TopUpResponse, error) {
 
 	topUps, err := u.topUpRepository.GetAll()
@@ -146,14 +130,8 @@ func (u *topUpUsecase) GetAll() ([]dto.TopUpResponse, error) {
 	return responses, nil
 }
 
-// =====================================================
 // ADMIN - UPDATE STATUS
-// =====================================================
-
-func (u *topUpUsecase) UpdateStatus(
-	id int64,
-	status string,
-) error {
+func (u *topUpUsecase) UpdateStatus(id int64, status string) error {
 
 	status = strings.ToLower(
 		strings.TrimSpace(status),
@@ -172,13 +150,8 @@ func (u *topUpUsecase) UpdateStatus(
 	)
 }
 
-// =====================================================
 // ADMIN - APPROVE
-// =====================================================
-
-func (u *topUpUsecase) Approve(
-	id int64,
-) error {
+func (u *topUpUsecase) Approve(id int64) error {
 
 	// Cari top up
 	topUp, err := u.topUpRepository.GetByID(id)
@@ -221,16 +194,17 @@ func (u *topUpUsecase) Approve(
 		return err
 	}
 
+	_ = u.emailNotificationUsecase.SendTopUpSuccess(
+		user.UserID,
+		user.Email,
+		topUp.Amount,
+	)
+
 	return nil
 }
 
-// =====================================================
 // ADMIN - REJECT
-// =====================================================
-
-func (u *topUpUsecase) Reject(
-	id int64,
-) error {
+func (u *topUpUsecase) Reject(id int64) error {
 
 	topUp, err := u.topUpRepository.GetByID(id)
 
@@ -245,8 +219,26 @@ func (u *topUpUsecase) Reject(
 		)
 	}
 
-	return u.topUpRepository.UpdateStatus(
+	user, err := u.userRepository.GetByID(topUp.UserID)
+
+	if err != nil {
+		return errors.New("user not found")
+	}
+
+	err = u.topUpRepository.UpdateStatus(
 		id,
 		"failed",
 	)
+
+	if err != nil {
+		return err
+	}
+
+	_ = u.emailNotificationUsecase.SendTopUpFailed(
+		user.UserID,
+		user.Email,
+		topUp.Amount,
+	)
+
+	return nil
 }

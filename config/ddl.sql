@@ -2,11 +2,11 @@ create database rent_amera_db;
 
 -- USERS TABLE
 CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
+    user_id BIGSERIAL PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(20) NOT NULL DEFAULT,
+    role VARCHAR(20) NOT NULL DEFAULT 'user',
     deposit_amount NUMERIC(15,2) NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -15,7 +15,7 @@ CREATE TABLE users (
 
 -- CAMERAS TABLE
 CREATE TABLE cameras (
-    camera_id SERIAL PRIMARY KEY,
+    camera_id BIGSERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     available BOOLEAN NOT NULL DEFAULT TRUE,
     rental_cost NUMERIC(15,2) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE cameras (
 
 -- RENTAL ORDERS
 CREATE TABLE rental_orders (
-    rental_order_id SERIAL PRIMARY KEY,
+    rental_order_id BIGSERIAL PRIMARY KEY,
     user_id BIGINT NOT NULL,
     order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     total_amount NUMERIC(15,2) NOT NULL DEFAULT 0,
@@ -45,7 +45,7 @@ ON DELETE CASCADE;
 
 
 CREATE TABLE rental_order_details (
-    rental_detail_id SERIAL PRIMARY KEY,
+    rental_detail_id BIGSERIAL PRIMARY KEY,
     rental_order_id BIGINT NOT NULL,
     camera_id BIGINT NOT NULL,
     rental_cost NUMERIC(15,2) NOT NULL,
@@ -70,7 +70,7 @@ ON DELETE RESTRICT;
 
 
 CREATE TABLE payments (
-    payment_id SERIAL PRIMARY KEY,
+    payment_id BIGSERIAL PRIMARY KEY,
     rental_order_id BIGINT NOT NULL UNIQUE,
     amount NUMERIC(15,2) NOT NULL,
     payment_method VARCHAR(50) NOT NULL,
@@ -146,3 +146,4 @@ CHECK (amount > 0);
 
 
 select * from users u ;
+select * from top_ups tu ;

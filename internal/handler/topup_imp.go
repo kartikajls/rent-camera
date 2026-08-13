@@ -23,11 +23,9 @@ func NewTopUpHandler(
 	}
 }
 
-// =====================================================
 // USER - CREATE TOP UP
-// POST /users/topup
-// =====================================================
 
+// POST /users/topup
 func (h *topUpHandler) Create(c echo.Context) error {
 
 	// Ambil user_id dari JWT Middleware
@@ -98,11 +96,9 @@ func (h *topUpHandler) Create(c echo.Context) error {
 	)
 }
 
-// =====================================================
 // USER - GET OWN TOP UPS
-// GET /users/topup
-// =====================================================
 
+// GET /users/topup
 func (h *topUpHandler) GetByUserID(c echo.Context) error {
 
 	// Ambil user_id dari JWT
@@ -147,12 +143,10 @@ func (h *topUpHandler) GetByUserID(c echo.Context) error {
 	)
 }
 
-// =====================================================
 // USER / ADMIN - GET TOP UP BY ID
+
 // GET /users/topup/:id
 // GET /admin/topups/:id
-// =====================================================
-
 func (h *topUpHandler) GetByID(c echo.Context) error {
 
 	idParam := c.Param("id")
@@ -191,11 +185,8 @@ func (h *topUpHandler) GetByID(c echo.Context) error {
 	)
 }
 
-// =====================================================
 // ADMIN - GET ALL TOP UPS
 // GET /admin/topups
-// =====================================================
-
 func (h *topUpHandler) GetAll(c echo.Context) error {
 
 	topUps, err := h.topUpUsecase.GetAll()
@@ -217,11 +208,9 @@ func (h *topUpHandler) GetAll(c echo.Context) error {
 	)
 }
 
-// =====================================================
 // ADMIN - APPROVE TOP UP
-// PUT /admin/topups/:id/approve
-// =====================================================
 
+// PUT /admin/topups/:id/approve
 func (h *topUpHandler) Approve(c echo.Context) error {
 
 	idParam := c.Param("id")
@@ -260,11 +249,9 @@ func (h *topUpHandler) Approve(c echo.Context) error {
 	)
 }
 
-// =====================================================
 // ADMIN - REJECT TOP UP
-// PUT /admin/topups/:id/reject
-// =====================================================
 
+// PUT /admin/topups/:id/reject
 func (h *topUpHandler) Reject(c echo.Context) error {
 
 	idParam := c.Param("id")

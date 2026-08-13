@@ -16,10 +16,12 @@ func NewEmailNotificationRepository(db *gorm.DB) EmailNotificationRepository {
 	}
 }
 
+// create
 func (r *emailNotificationRepository) Create(notification *entity.EmailNotification) error {
 	return r.db.Create(notification).Error
 }
 
+// Getby Id
 func (r *emailNotificationRepository) GetByID(notificationID int64) (*entity.EmailNotification, error) {
 
 	var notification entity.EmailNotification
@@ -35,6 +37,7 @@ func (r *emailNotificationRepository) GetByID(notificationID int64) (*entity.Ema
 	return &notification, nil
 }
 
+// GetbyUserID
 func (r *emailNotificationRepository) GetByUserID(userID int64) ([]entity.EmailNotification, error) {
 
 	var notifications []entity.EmailNotification
@@ -51,6 +54,7 @@ func (r *emailNotificationRepository) GetByUserID(userID int64) ([]entity.EmailN
 	return notifications, nil
 }
 
+// update
 func (r *emailNotificationRepository) Update(notification *entity.EmailNotification) error {
 	return r.db.Save(notification).Error
 }

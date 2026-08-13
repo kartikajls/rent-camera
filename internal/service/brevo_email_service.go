@@ -14,6 +14,10 @@ type brevoEmailService struct {
 	senderName  string
 }
 
+// =====================================================
+// CONSTRUCTOR
+// =====================================================
+
 func NewBrevoEmailService() EmailService {
 	return &brevoEmailService{
 		apiKey:      os.Getenv("BREVO_API_KEY"),
@@ -22,9 +26,9 @@ func NewBrevoEmailService() EmailService {
 	}
 }
 
-// =========================
-// Brevo Request
-// =========================
+// =====================================================
+// BREVO REQUEST
+// =====================================================
 
 type brevoEmailRequest struct {
 	Sender      brevoSender `json:"sender"`
@@ -43,24 +47,23 @@ type brevoTo struct {
 	Name  string `json:"name"`
 }
 
-// =========================
-// Brevo Response
-// =========================
+// =====================================================
+// BREVO RESPONSE
+// =====================================================
 
 type brevoEmailResponse struct {
 	MessageID string `json:"messageId"`
 }
 
-// =========================
-// Send Email to Brevo
-// =========================
+// =====================================================
+// SEND EMAIL
+// =====================================================
 
-func (s *brevoEmailService) send(
-	toEmail string,
-	toName string,
-	subject string,
-	htmlContent string,
-) (string, error) {
+func (s *brevoEmailService) SendEmail(to string, subject string, htmlContent string) (string, error) {
+
+	// -------------------------------------------------
+	// Validate configuration
+	// -------------------------------------------------
 
 	if s.apiKey == "" {
 		return "", fmt.Errorf("BREVO_API_KEY belum diset")
@@ -70,6 +73,26 @@ func (s *brevoEmailService) send(
 		return "", fmt.Errorf("BREVO_SENDER_EMAIL belum diset")
 	}
 
+	// -------------------------------------------------
+	// Validate input
+	// -------------------------------------------------
+
+	if to == "" {
+		return "", fmt.Errorf("recipient email is required")
+	}
+
+	if subject == "" {
+		return "", fmt.Errorf("email subject is required")
+	}
+
+	if htmlContent == "" {
+		return "", fmt.Errorf("email content is required")
+	}
+
+	// -------------------------------------------------
+	// Request body
+	// -------------------------------------------------
+
 	requestBody := brevoEmailRequest{
 		Sender: brevoSender{
 			Email: s.senderEmail,
@@ -77,189 +100,119 @@ func (s *brevoEmailService) send(
 		},
 		To: []brevoTo{
 			{
-				Email: toEmail,
-				Name:  toName,
+				Email: to,
 			},
 		},
 		Subject:     subject,
 		HTMLContent: htmlContent,
 	}
 
+	// -------------------------------------------------
+	// Encode JSON
+	// -------------------------------------------------
+
 	jsonBody, err := json.Marshal(requestBody)
+
 	if err != nil {
-		return "", fmt.Errorf("failed to marshal email request: %w", err)
+		return "", fmt.Errorf(
+			"failed to marshal Brevo request: %w",
+			err,
+		)
 	}
+
+	// -------------------------------------------------
+	// Create HTTP request
+	// -------------------------------------------------
 
 	req, err := http.NewRequest(
 		http.MethodPost,
 		"https://api.brevo.com/v3/smtp/email",
 		bytes.NewBuffer(jsonBody),
 	)
+
 	if err != nil {
-		return "", fmt.Errorf("failed to create email request: %w", err)
+		return "", fmt.Errorf(
+			"failed to create Brevo request: %w",
+			err,
+		)
 	}
+
+	// -------------------------------------------------
+	// Headers
+	// -------------------------------------------------
 
 	req.Header.Set("accept", "application/json")
 	req.Header.Set("api-key", s.apiKey)
 	req.Header.Set("content-type", "application/json")
 
+	// -------------------------------------------------
+	// Send request
+	// -------------------------------------------------
+
 	client := &http.Client{}
 
 	resp, err := client.Do(req)
+
 	if err != nil {
-		return "", fmt.Errorf("failed to send email: %w", err)
+		return "", fmt.Errorf(
+			"failed to send email: %w",
+			err,
+		)
 	}
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+	// -------------------------------------------------
+	// Handle error response
+	// -------------------------------------------------
+
+	if resp.StatusCode < http.StatusOK ||
+		resp.StatusCode >= http.StatusMultipleChoices {
+
+		var errorResponse map[string]interface{}
+
+		if err := json.NewDecoder(resp.Body).Decode(
+			&errorResponse,
+		); err != nil {
+
+			return "", fmt.Errorf(
+				"Brevo API returned status code %d",
+				resp.StatusCode,
+			)
+		}
+
 		return "", fmt.Errorf(
-			"brevo API returned status code: %d",
+			"Brevo API error: status %d, response: %v",
 			resp.StatusCode,
+			errorResponse,
 		)
 	}
 
+	// -------------------------------------------------
+	// Decode successful response
+	// -------------------------------------------------
+
 	var response brevoEmailResponse
 
-	err = json.NewDecoder(resp.Body).Decode(&response)
-	if err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(
+		&response,
+	); err != nil {
+
 		return "", fmt.Errorf(
 			"failed to decode Brevo response: %w",
 			err,
 		)
 	}
 
+	// -------------------------------------------------
+	// Validate message ID
+	// -------------------------------------------------
+
+	if response.MessageID == "" {
+		return "", fmt.Errorf(
+			"Brevo returned empty message ID",
+		)
+	}
+
 	return response.MessageID, nil
-}
-
-// =========================
-// Registration Email
-// =========================
-
-func (s *brevoEmailService) SendRegistrationEmail(
-	toEmail string,
-	username string,
-) (string, error) {
-
-	subject := "Registration Confirmation - Rent Camera"
-
-	htmlContent := fmt.Sprintf(`
-		<html>
-		<body>
-			<h2>Welcome to Rent Camera, %s!</h2>
-
-			<p>Your registration has been successfully completed.</p>
-
-			<p>
-				Thank you for joining Rent Camera.
-			</p>
-
-			<p>
-				Regards,<br>
-				Rent Camera Team
-			</p>
-		</body>
-		</html>
-	`, username)
-
-	return s.send(
-		toEmail,
-		username,
-		subject,
-		htmlContent,
-	)
-}
-
-// =========================
-// Booking Confirmation Email
-// =========================
-
-func (s *brevoEmailService) SendBookingConfirmationEmail(
-	toEmail string,
-	username string,
-	orderID int64,
-) (string, error) {
-
-	subject := "Booking Confirmation - Rent Camera"
-
-	htmlContent := fmt.Sprintf(`
-		<html>
-		<body>
-			<h2>Booking Confirmation</h2>
-
-			<p>Hello %s,</p>
-
-			<p>
-				Your camera rental booking has been successfully created.
-			</p>
-
-			<p>
-				<strong>Rental Order ID:</strong> %d
-			</p>
-
-			<p>
-				Please check your account for complete booking details.
-			</p>
-
-			<p>
-				Regards,<br>
-				Rent Camera Team
-			</p>
-		</body>
-		</html>
-	`, username, orderID)
-
-	return s.send(
-		toEmail,
-		username,
-		subject,
-		htmlContent,
-	)
-}
-
-// =========================
-// Payment Confirmation Email
-// =========================
-
-func (s *brevoEmailService) SendPaymentConfirmationEmail(
-	toEmail string,
-	username string,
-	orderID int64,
-) (string, error) {
-
-	subject := "Payment Confirmation - Rent Camera"
-
-	htmlContent := fmt.Sprintf(`
-		<html>
-		<body>
-			<h2>Payment Confirmation</h2>
-
-			<p>Hello %s,</p>
-
-			<p>
-				Your payment has been successfully confirmed.
-			</p>
-
-			<p>
-				<strong>Rental Order ID:</strong> %d
-			</p>
-
-			<p>
-				Your rental order is now being processed.
-			</p>
-
-			<p>
-				Regards,<br>
-				Rent Camera Team
-			</p>
-		</body>
-		</html>
-	`, username, orderID)
-
-	return s.send(
-		toEmail,
-		username,
-		subject,
-		htmlContent,
-	)
 }

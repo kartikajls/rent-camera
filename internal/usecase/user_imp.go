@@ -10,37 +10,74 @@ import (
 )
 
 type userUsecase struct {
-	userRepository repository.UserRepository
+	userRepository           repository.UserRepository
+	emailNotificationUsecase EmailNotificationUsecase
 }
 
 func NewUserUsecase(
 	userRepository repository.UserRepository,
+	emailNotificationUsecase EmailNotificationUsecase,
 ) UserUsecase {
 	return &userUsecase{
-		userRepository: userRepository,
+		userRepository:           userRepository,
+		emailNotificationUsecase: emailNotificationUsecase,
 	}
 }
 
-func (u *userUsecase) Register(request dto.RegisterRequest) (*dto.UserResponse, error) {
+func (u *userUsecase) Register(request dto.RegisterRequest) (*dto.RegisterResponse, error) {
 
+	// Validasi username
+	if request.Username == "" {
+		return nil, errors.New("username is required")
+	}
+
+	// Validasi email
+	if request.Email == "" {
+		return nil, errors.New("email is required")
+	}
+
+	// Validasi password
+	if request.Password == "" {
+		return nil, errors.New("password is required")
+	}
+
+	// Cek email sudah terdaftar
 	existingUser, err := u.userRepository.GetByEmail(request.Email)
 
 	if err == nil && existingUser != nil {
 		return nil, errors.New("email already registered")
 	}
 
+	// Buat entity user
 	user := &entity.User{
 		Username:      request.Username,
 		Email:         request.Email,
 		Password:      request.Password,
+		Role:          "user",
 		DepositAmount: 0,
 	}
 
-	if err := u.userRepository.Create(user); err != nil {
+	// Simpan user
+	err = u.userRepository.Create(user)
+
+	if err != nil {
 		return nil, err
 	}
 
-	return &dto.UserResponse{
+	// SEND REGISTRATION EMAIL
+
+	// Email gagal tidak membatalkan registrasi.
+	// Status email akan disimpan sebagai failed
+	// oleh EmailNotificationUsecase.
+	_ = u.emailNotificationUsecase.SendRegistrationEmail(
+		user.UserID,
+		user.Email,
+		user.Username,
+	)
+
+	// RESPONSE
+
+	return &dto.RegisterResponse{
 		UserID:        user.UserID,
 		Username:      user.Username,
 		Email:         user.Email,

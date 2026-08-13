@@ -16,15 +16,11 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 	}
 }
 
-func (r *userRepository) Create(
-	user *entity.User,
-) error {
+func (r *userRepository) Create(user *entity.User) error {
 	return r.db.Create(user).Error
 }
 
-func (r *userRepository) GetByID(
-	userID int64,
-) (*entity.User, error) {
+func (r *userRepository) GetByID(userID int64) (*entity.User, error) {
 
 	var user entity.User
 
@@ -39,9 +35,7 @@ func (r *userRepository) GetByID(
 	return &user, nil
 }
 
-func (r *userRepository) GetByEmail(
-	email string,
-) (*entity.User, error) {
+func (r *userRepository) GetByEmail(email string) (*entity.User, error) {
 
 	var user entity.User
 
