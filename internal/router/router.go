@@ -12,6 +12,7 @@ func SetupRoutes(
 	userHandler handler.UserHandler,
 	topUpHandler handler.TopUpHandler,
 	cameraHandler handler.CameraHandler,
+	rentalOrderHandler handler.RentalOrderHandler,
 ) {
 
 	// =========================================
@@ -43,6 +44,11 @@ func SetupRoutes(
 	user.GET("/cameras", cameraHandler.GetAll)
 	user.GET("/cameras/:id", cameraHandler.GetByID)
 
+	// Rent Order endpoint
+	user.POST("/orders", rentalOrderHandler.CreateOrder)
+	user.GET("/orders", rentalOrderHandler.GetMyOrders)
+	user.GET("/orders/:id", rentalOrderHandler.GetOrderByID)
+
 	// =========================================
 	// ADMIN ROUTES
 	// =========================================
@@ -69,4 +75,9 @@ func SetupRoutes(
 	admin.POST("/cameras", cameraHandler.Create)
 	admin.PUT("/cameras/:id", cameraHandler.Update)
 	admin.DELETE("/cameras/:id", cameraHandler.Delete)
+
+	// Rent Order endpoint
+	admin.GET("/orders", rentalOrderHandler.GetAllOrders)
+	admin.PUT("/orders/:id/status", rentalOrderHandler.UpdateOrderStatus)
+	admin.DELETE("/orders/:id", rentalOrderHandler.DeleteOrder)
 }
