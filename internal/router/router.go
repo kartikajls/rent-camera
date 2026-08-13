@@ -14,6 +14,7 @@ func SetupRoutes(
 	cameraHandler handler.CameraHandler,
 	rentalOrderHandler handler.RentalOrderHandler,
 	rentalOrderDetailHandler handler.RentalOrderDetailHandler,
+	paymentHandler handler.PaymentHandler,
 ) {
 
 	// =========================================
@@ -55,6 +56,11 @@ func SetupRoutes(
 	user.GET("/rental-orders/:order_id/details", rentalOrderDetailHandler.GetDetailsByOrderID)
 	user.GET("/rental-order-details/:detail_id", rentalOrderDetailHandler.GetDetailByID)
 
+	// Payment ednpoint
+	user.POST("/payments", paymentHandler.CreatePayment)
+	user.GET("/payments", paymentHandler.GetMyPayments)
+	user.GET("/payments/:payment_id", paymentHandler.GetMyPaymentByID)
+
 	// =========================================
 	// ADMIN ROUTES
 	// =========================================
@@ -91,5 +97,10 @@ func SetupRoutes(
 	admin.GET("/rental-order-details", rentalOrderDetailHandler.GetAllDetails)
 	admin.PUT("/rental-order-details/:detail_id", rentalOrderDetailHandler.UpdateDetail)
 	admin.DELETE("/rental-order-details/:detail_id", rentalOrderDetailHandler.DeleteDetail)
+
+	// Payment endpoint
+	// ADMIN - Get All Payments
+	admin.GET("/payments", paymentHandler.GetAllPayments)
+	admin.PUT("/payments/:payment_id/status", paymentHandler.UpdatePaymentStatus)
 
 }

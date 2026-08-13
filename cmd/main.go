@@ -32,6 +32,7 @@ func main() {
 	cameraRepository := repository.NewCameraRepository(db)
 	orderRepository := repository.NewRentalOrderRepository(db)
 	orderDetailsRepository := repository.NewRentalOrderDetailRepository(db)
+	paymentRepository := repository.NewPaymentRepository(db)
 
 	// Usecase
 	userUsecase := usecase.NewUserUsecase(userRepository)
@@ -39,6 +40,7 @@ func main() {
 	cameraUsecase := usecase.NewCameraUsecase(cameraRepository)
 	orderUsecase := usecase.NewRentalOrderUsecase(orderRepository)
 	orderDetailsUsecase := usecase.NewRentalOrderDetailUsecase(orderDetailsRepository)
+	paymentUsecase := usecase.NewPaymentUsecase(paymentRepository)
 
 	// Handler
 	userHandler := handler.NewUserHandler(userUsecase)
@@ -46,6 +48,7 @@ func main() {
 	cameraHandler := handler.NewCameraHandler(cameraUsecase)
 	orderHandler := handler.NewRentalOrderHandler(orderUsecase)
 	orderDetailsHandler := handler.NewRentalOrderDetailHandler(orderDetailsUsecase)
+	paymentHandler := handler.NewPaymentHandler(paymentUsecase)
 
 	// Echo
 	e := echo.New()
@@ -58,6 +61,7 @@ func main() {
 		cameraHandler,
 		orderHandler,
 		orderDetailsHandler,
+		paymentHandler,
 	)
 
 	// Start Server
