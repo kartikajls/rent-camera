@@ -30,19 +30,22 @@ func main() {
 	userRepository := repository.NewUserRepository(db)
 	topUpRepository := repository.NewTopUpRepository(db)
 	cameraRepository := repository.NewCameraRepository(db)
-	rentOrderRepository := repository.NewRentalOrderRepository(db)
+	orderRepository := repository.NewRentalOrderRepository(db)
+	orderDetailsRepository := repository.NewRentalOrderDetailRepository(db)
 
 	// Usecase
 	userUsecase := usecase.NewUserUsecase(userRepository)
 	topUpUsecase := usecase.NewTopUpUsecase(topUpRepository, userRepository)
 	cameraUsecase := usecase.NewCameraUsecase(cameraRepository)
-	rentOrderUsecase := usecase.NewRentalOrderUsecase(rentOrderRepository)
+	orderUsecase := usecase.NewRentalOrderUsecase(orderRepository)
+	orderDetailsUsecase := usecase.NewRentalOrderDetailUsecase(orderDetailsRepository)
 
 	// Handler
 	userHandler := handler.NewUserHandler(userUsecase)
 	topUpHandler := handler.NewTopUpHandler(topUpUsecase)
 	cameraHandler := handler.NewCameraHandler(cameraUsecase)
-	rentOrderHandler := handler.NewRentalOrderHandler(rentOrderUsecase)
+	orderHandler := handler.NewRentalOrderHandler(orderUsecase)
+	orderDetailsHandler := handler.NewRentalOrderDetailHandler(orderDetailsUsecase)
 
 	// Echo
 	e := echo.New()
@@ -53,7 +56,8 @@ func main() {
 		userHandler,
 		topUpHandler,
 		cameraHandler,
-		rentOrderHandler,
+		orderHandler,
+		orderDetailsHandler,
 	)
 
 	// Start Server
