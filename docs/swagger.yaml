@@ -1,0 +1,672 @@
+basePath: /
+definitions:
+  p2-ip-kartikajls_internal_dto.CreatePaymentRequest:
+    properties:
+      payment_method:
+        type: string
+      rental_order_id:
+        type: integer
+    required:
+    - payment_method
+    - rental_order_id
+    type: object
+  p2-ip-kartikajls_internal_dto.CreateRentalOrderRequest:
+    properties:
+      camera_id:
+        type: integer
+    required:
+    - camera_id
+    type: object
+  p2-ip-kartikajls_internal_dto.CreateTopUpRequest:
+    properties:
+      amount:
+        type: number
+    type: object
+  p2-ip-kartikajls_internal_dto.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  p2-ip-kartikajls_internal_dto.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  p2-ip-kartikajls_internal_dto.UpdatePaymentStatusRequest:
+    properties:
+      payment_status:
+        type: string
+    required:
+    - payment_status
+    type: object
+  p2-ip-kartikajls_internal_dto.UpdateRentalOrderStatusRequest:
+    properties:
+      status:
+        type: string
+    required:
+    - status
+    type: object
+  p2-ip-kartikajls_internal_helper.Response:
+    properties:
+      responseCode:
+        type: integer
+      responseData: {}
+      responseMessage:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: |-
+    REST API untuk aplikasi Rent Camera.
+    API ini menyediakan fitur register, login, camera, top up, rental order, dan payment.
+    Admin dapat melakukan approval terhadap top up, order, dan payment.
+  title: Jati Rent Camera API
+  version: "1.0"
+paths:
+  /admin/orders:
+    get:
+      description: Admin melihat seluruh rental order
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get All Orders
+      tags:
+      - Admin - Order Approve
+  /admin/orders/{id}/status:
+    put:
+      consumes:
+      - application/json
+      description: Admin menyetujui atau mengubah status rental order user
+      parameters:
+      - description: Rental Order ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Order Status Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.UpdateRentalOrderStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Approve Rental Order
+      tags:
+      - Admin - Order Approve
+  /admin/payments:
+    get:
+      description: Admin melihat seluruh pembayaran
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get All Payments
+      tags:
+      - Admin - Payment Approve
+  /admin/payments/{payment_id}/status:
+    put:
+      consumes:
+      - application/json
+      description: Admin menyetujui pembayaran rental order
+      parameters:
+      - description: Payment ID
+        format: int64
+        in: path
+        name: payment_id
+        required: true
+        type: integer
+      - description: Payment Status Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.UpdatePaymentStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Approve Payment
+      tags:
+      - Admin - Payment Approve
+  /admin/topups:
+    get:
+      description: Admin melihat seluruh permintaan top up
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get All Top Ups
+      tags:
+      - Admin - Top Up Approve
+  /admin/topups/{id}/approve:
+    put:
+      consumes:
+      - application/json
+      description: Admin menyetujui permintaan top up user
+      parameters:
+      - description: Top Up ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Approve Top Up
+      tags:
+      - Admin - Top Up Approve
+  /users/{id}:
+    get:
+      description: Mendapatkan data user berdasarkan ID
+      parameters:
+      - description: User ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get User By ID
+      tags:
+      - User
+  /users/cameras:
+    get:
+      consumes:
+      - application/json
+      description: User melihat daftar kamera yang tersedia untuk rental
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get All Cameras
+      tags:
+      - User - Camera
+  /users/cameras/{id}:
+    get:
+      consumes:
+      - application/json
+      description: User melihat detail kamera berdasarkan ID
+      parameters:
+      - description: Camera ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Camera By ID
+      tags:
+      - User - Camera
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: User melakukan login untuk mendapatkan JWT
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      summary: Login User
+      tags:
+      - User - Login
+  /users/orders:
+    get:
+      description: Mendapatkan seluruh order milik user yang sedang login
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get My Orders
+      tags:
+      - User - Order
+    post:
+      consumes:
+      - application/json
+      description: User membuat order rental dengan memilih camera
+      parameters:
+      - description: Rental Order Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.CreateRentalOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Create Rental Order
+      tags:
+      - User - Order
+  /users/orders/{id}:
+    get:
+      consumes:
+      - application/json
+      description: User melihat detail order
+      parameters:
+      - description: Rental Order ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Order By ID
+      tags:
+      - User - Order
+  /users/payments:
+    get:
+      description: Mendapatkan seluruh pembayaran milik user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get My Payments
+      tags:
+      - User - Payment
+    post:
+      consumes:
+      - application/json
+      description: User melakukan pembayaran untuk rental order yang telah disetujui
+      parameters:
+      - description: Payment Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.CreatePaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Create Payment
+      tags:
+      - User - Payment
+  /users/payments/{payment_id}:
+    get:
+      description: Mendapatkan detail pembayaran berdasarkan ID
+      parameters:
+      - description: Payment ID
+        format: int64
+        in: path
+        name: payment_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get My Payment By ID
+      tags:
+      - User - Payment
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: User melakukan registrasi akun
+      parameters:
+      - description: Register Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      summary: Register User
+      tags:
+      - User - Register
+  /users/topup/{id}:
+    get:
+      description: Mendapatkan detail top up berdasarkan ID
+      parameters:
+      - description: Top Up ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Top Up By ID
+      tags:
+      - User - Top Up
+  /users/topups:
+    get:
+      consumes:
+      - application/json
+      description: User melihat riwayat top up miliknya
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get My Top Ups
+      tags:
+      - User - Top Up
+    post:
+      consumes:
+      - application/json
+      description: User membuat permintaan top up saldo
+      parameters:
+      - description: Top Up Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.CreateTopUpRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Create Top Up
+      tags:
+      - User - Top Up
+securityDefinitions:
+  BearerAuth:
+    description: 'Masukkan JWT dengan format: Bearer {token}'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -22,6 +22,18 @@ func NewPaymentHandler(
 	}
 }
 
+// CreatePayment godoc
+// @Summary     Create Payment
+// @Description User melakukan pembayaran untuk rental order yang telah disetujui
+// @Tags        User - Payment
+// @Accept      application/json
+// @Produce     application/json
+// @Security    BearerAuth
+// @Param       request body dto.CreatePaymentRequest true "Payment Request"
+// @Success     201 {object} helper.Response
+// @Failure     400 {object} helper.Response
+// @Failure     401 {object} helper.Response
+// @Router      /users/payments [post]
 func (h *paymentHandler) CreatePayment(c echo.Context) error {
 
 	userIDValue := c.Get("user_id")
@@ -109,6 +121,15 @@ func (h *paymentHandler) CreatePayment(c echo.Context) error {
 	)
 }
 
+// GetMyPayments godoc
+// @Summary Get My Payments
+// @Description Mendapatkan seluruh pembayaran milik user
+// @Tags User - Payment
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} helper.Response
+// @Failure 401 {object} helper.Response
+// @Router /users/payments [get]
 func (h *paymentHandler) GetMyPayments(c echo.Context) error {
 
 	userIDValue := c.Get("user_id")
@@ -154,6 +175,17 @@ func (h *paymentHandler) GetMyPayments(c echo.Context) error {
 	)
 }
 
+// GetMyPaymentByID godoc
+// @Summary Get My Payment By ID
+// @Description Mendapatkan detail pembayaran berdasarkan ID
+// @Tags User - Payment
+// @Produce json
+// @Security BearerAuth
+// @Param payment_id path int64 true "Payment ID"
+// @Success 200 {object} helper.Response
+// @Failure 401 {object} helper.Response
+// @Failure 404 {object} helper.Response
+// @Router /users/payments/{payment_id} [get]
 func (h *paymentHandler) GetMyPaymentByID(c echo.Context) error {
 
 	userIDValue := c.Get("user_id")
@@ -215,6 +247,16 @@ func (h *paymentHandler) GetMyPaymentByID(c echo.Context) error {
 	)
 }
 
+// GetAllPayments godoc
+// @Summary Get All Payments
+// @Description Admin melihat seluruh pembayaran
+// @Tags Admin - Payment Approve
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} helper.Response
+// @Failure 401 {object} helper.Response
+// @Failure 403 {object} helper.Response
+// @Router /admin/payments [get]
 func (h *paymentHandler) GetAllPayments(c echo.Context) error {
 
 	result, err := h.usecase.GetAllPayments()
@@ -236,6 +278,21 @@ func (h *paymentHandler) GetAllPayments(c echo.Context) error {
 	)
 }
 
+// UpdatePaymentStatus godoc
+// @Summary     Approve Payment
+// @Description Admin menyetujui pembayaran rental order
+// @Tags        Admin - Payment Approve
+// @Accept      application/json
+// @Produce     application/json
+// @Security    BearerAuth
+// @Param       payment_id path int64 true "Payment ID"
+// @Param       request body dto.UpdatePaymentStatusRequest true "Payment Status Request"
+// @Success     200 {object} helper.Response
+// @Failure     400 {object} helper.Response
+// @Failure     401 {object} helper.Response
+// @Failure     403 {object} helper.Response
+// @Failure     404 {object} helper.Response
+// @Router      /admin/payments/{payment_id}/status [put]
 func (h *paymentHandler) UpdatePaymentStatus(c echo.Context) error {
 
 	paymentID, err := strconv.ParseInt(

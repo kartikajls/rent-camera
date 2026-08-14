@@ -23,7 +23,18 @@ func NewRentalOrderHandler(
 	}
 }
 
-// USER
+// CreateOrder godoc
+// @Summary     Create Rental Order
+// @Description User membuat order rental dengan memilih camera
+// @Tags        User - Order
+// @Accept      application/json
+// @Produce     application/json
+// @Security    BearerAuth
+// @Param       request body dto.CreateRentalOrderRequest true "Rental Order Request"
+// @Success     201 {object} helper.Response
+// @Failure     400 {object} helper.Response
+// @Failure     401 {object} helper.Response
+// @Router      /users/orders [post]
 func (h *rentalOrderHandler) CreateOrder(c echo.Context) error {
 
 	userIDValue := c.Get("user_id")
@@ -81,6 +92,15 @@ func (h *rentalOrderHandler) CreateOrder(c echo.Context) error {
 	)
 }
 
+// GetMyOrders godoc
+// @Summary Get My Orders
+// @Description Mendapatkan seluruh order milik user yang sedang login
+// @Tags User - Order
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} helper.Response
+// @Failure 401 {object} helper.Response
+// @Router /users/orders [get]
 func (h *rentalOrderHandler) GetMyOrders(c echo.Context) error {
 
 	userIDValue := c.Get("user_id")
@@ -124,6 +144,18 @@ func (h *rentalOrderHandler) GetMyOrders(c echo.Context) error {
 	)
 }
 
+// GetOrderByID godoc
+// @Summary     Get Order By ID
+// @Description User melihat detail order
+// @Tags        User - Order
+// @Accept      application/json
+// @Produce     application/json
+// @Security    BearerAuth
+// @Param       id path int64 true "Rental Order ID"
+// @Success     200 {object} helper.Response
+// @Failure     401 {object} helper.Response
+// @Failure     404 {object} helper.Response
+// @Router      /users/orders/{id} [get]
 func (h *rentalOrderHandler) GetOrderByID(c echo.Context) error {
 
 	idParam := c.Param("id")
@@ -159,6 +191,17 @@ func (h *rentalOrderHandler) GetOrderByID(c echo.Context) error {
 }
 
 // ADMIN
+
+// GetAllOrders godoc
+// @Summary Get All Orders
+// @Description Admin melihat seluruh rental order
+// @Tags Admin - Order Approve
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} helper.Response
+// @Failure 401 {object} helper.Response
+// @Failure 403 {object} helper.Response
+// @Router /admin/orders [get]
 func (h *rentalOrderHandler) GetAllOrders(c echo.Context) error {
 
 	result, err := h.rentalOrderUsecase.GetAllOrders()
@@ -180,6 +223,21 @@ func (h *rentalOrderHandler) GetAllOrders(c echo.Context) error {
 	)
 }
 
+// UpdateOrderStatus godoc
+// @Summary     Approve Rental Order
+// @Description Admin menyetujui atau mengubah status rental order user
+// @Tags        Admin - Order Approve
+// @Accept      application/json
+// @Produce     application/json
+// @Security    BearerAuth
+// @Param       id path int64 true "Rental Order ID"
+// @Param       request body dto.UpdateRentalOrderStatusRequest true "Order Status Request"
+// @Success     200 {object} helper.Response
+// @Failure     400 {object} helper.Response
+// @Failure     401 {object} helper.Response
+// @Failure     403 {object} helper.Response
+// @Failure     404 {object} helper.Response
+// @Router      /admin/orders/{id}/status [put]
 func (h *rentalOrderHandler) UpdateOrderStatus(c echo.Context) error {
 
 	idParam := c.Param("id")

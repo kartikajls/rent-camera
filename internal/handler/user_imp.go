@@ -24,16 +24,15 @@ func NewUserHandler(
 }
 
 // Register godoc
-// @Summary Register user
-// @Description Register a new user
-// @Tags Users
-// @Accept json
-// @Produce json
-// @Param request body dto.RegisterRequest true "Register request"
-// @Success 201 {object} helper.Response
-// @Failure 400 {object} helper.Response
-// @Failure 500 {object} helper.Response
-// @Router /users/register [post]
+// @Summary     Register User
+// @Description User melakukan registrasi akun
+// @Tags        User - Register
+// @Accept      application/json
+// @Produce     application/json
+// @Param       request body dto.RegisterRequest true "Register Request"
+// @Success     201 {object} helper.Response
+// @Failure     400 {object} helper.Response
+// @Router      /users/register [post]
 func (h *userHandler) Register(c echo.Context) error {
 
 	var request dto.RegisterRequest
@@ -79,16 +78,16 @@ func (h *userHandler) Register(c echo.Context) error {
 }
 
 // Login godoc
-// @Summary Login user
-// @Description Login user and generate JWT
-// @Tags Users
-// @Accept json
-// @Produce json
-// @Param request body dto.LoginRequest true "Login request"
-// @Success 200 {object} helper.Response
-// @Failure 400 {object} helper.Response
-// @Failure 401 {object} helper.Response
-// @Router /users/login [post]
+// @Summary     Login User
+// @Description User melakukan login untuk mendapatkan JWT
+// @Tags        User - Login
+// @Accept      application/json
+// @Produce     application/json
+// @Param       request body dto.LoginRequest true "Login Request"
+// @Success     200 {object} helper.Response
+// @Failure     400 {object} helper.Response
+// @Failure     401 {object} helper.Response
+// @Router      /users/login [post]
 func (h *userHandler) Login(c echo.Context) error {
 
 	var request dto.LoginRequest
@@ -131,15 +130,13 @@ func (h *userHandler) Login(c echo.Context) error {
 }
 
 // GetByID godoc
-// @Summary Get user by ID
-// @Description Get user information by ID
-// @Tags Users
-// @Accept json
+// @Summary Get User By ID
+// @Description Mendapatkan data user berdasarkan ID
+// @Tags User
 // @Produce json
 // @Security BearerAuth
-// @Param id path int true "User ID"
+// @Param id path int64 true "User ID"
 // @Success 200 {object} helper.Response
-// @Failure 400 {object} helper.Response
 // @Failure 401 {object} helper.Response
 // @Failure 404 {object} helper.Response
 // @Router /users/{id} [get]

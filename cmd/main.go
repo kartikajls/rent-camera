@@ -12,8 +12,25 @@ import (
 	"p2-ip-kartikajls/internal/router"
 	"p2-ip-kartikajls/internal/service"
 	"p2-ip-kartikajls/internal/usecase"
+
+	_ "p2-ip-kartikajls/docs"
+
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
+// @title Jati Rent Camera API
+// @version 1.0
+// @description REST API untuk aplikasi Rent Camera.
+// @description API ini menyediakan fitur register, login, camera, top up, rental order, dan payment.
+// @description Admin dapat melakukan approval terhadap top up, order, dan payment.
+//
+// @host localhost:8080
+// @BasePath /
+//
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Masukkan JWT dengan format: Bearer {token}
 func main() {
 
 	// Load Environment
@@ -59,6 +76,9 @@ func main() {
 
 	// Echo
 	e := echo.New()
+
+	// Swagger
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	// Router
 	router.SetupRoutes(

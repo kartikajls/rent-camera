@@ -23,9 +23,18 @@ func NewTopUpHandler(
 	}
 }
 
-// USER - CREATE TOP UP
-
-// POST /users/topup
+// Create godoc
+// @Summary     Create Top Up
+// @Description User membuat permintaan top up saldo
+// @Tags        User - Top Up
+// @Accept      application/json
+// @Produce     application/json
+// @Security    BearerAuth
+// @Param       request body dto.CreateTopUpRequest true "Top Up Request"
+// @Success     201 {object} helper.Response
+// @Failure     400 {object} helper.Response
+// @Failure     401 {object} helper.Response
+// @Router      /users/topups [post]
 func (h *topUpHandler) Create(c echo.Context) error {
 
 	// Ambil user_id dari JWT Middleware
@@ -96,9 +105,16 @@ func (h *topUpHandler) Create(c echo.Context) error {
 	)
 }
 
-// USER - GET OWN TOP UPS
-
-// GET /users/topup
+// GetByUserID godoc
+// @Summary     Get My Top Ups
+// @Description User melihat riwayat top up miliknya
+// @Tags        User - Top Up
+// @Accept      application/json
+// @Produce     application/json
+// @Security    BearerAuth
+// @Success     200 {object} helper.Response
+// @Failure     401 {object} helper.Response
+// @Router      /users/topups [get]
 func (h *topUpHandler) GetByUserID(c echo.Context) error {
 
 	// Ambil user_id dari JWT
@@ -145,8 +161,17 @@ func (h *topUpHandler) GetByUserID(c echo.Context) error {
 
 // USER / ADMIN - GET TOP UP BY ID
 
-// GET /users/topup/:id
-// GET /admin/topups/:id
+// GetByID godoc
+// @Summary Get Top Up By ID
+// @Description Mendapatkan detail top up berdasarkan ID
+// @Tags User - Top Up
+// @Produce json
+// @Security BearerAuth
+// @Param id path int64 true "Top Up ID"
+// @Success 200 {object} helper.Response
+// @Failure 401 {object} helper.Response
+// @Failure 404 {object} helper.Response
+// @Router /users/topup/{id} [get]
 func (h *topUpHandler) GetByID(c echo.Context) error {
 
 	idParam := c.Param("id")
@@ -187,6 +212,17 @@ func (h *topUpHandler) GetByID(c echo.Context) error {
 
 // ADMIN - GET ALL TOP UPS
 // GET /admin/topups
+
+// GetAll godoc
+// @Summary Get All Top Ups
+// @Description Admin melihat seluruh permintaan top up
+// @Tags Admin - Top Up Approve
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} helper.Response
+// @Failure 401 {object} helper.Response
+// @Failure 403 {object} helper.Response
+// @Router /admin/topups [get]
 func (h *topUpHandler) GetAll(c echo.Context) error {
 
 	topUps, err := h.topUpUsecase.GetAll()
@@ -210,7 +246,20 @@ func (h *topUpHandler) GetAll(c echo.Context) error {
 
 // ADMIN - APPROVE TOP UP
 
-// PUT /admin/topups/:id/approve
+// Approve godoc
+// @Summary     Approve Top Up
+// @Description Admin menyetujui permintaan top up user
+// @Tags        Admin - Top Up Approve
+// @Accept      application/json
+// @Produce     application/json
+// @Security    BearerAuth
+// @Param       id path int64 true "Top Up ID"
+// @Success     200 {object} helper.Response
+// @Failure     400 {object} helper.Response
+// @Failure     401 {object} helper.Response
+// @Failure     403 {object} helper.Response
+// @Failure     404 {object} helper.Response
+// @Router      /admin/topups/{id}/approve [put]
 func (h *topUpHandler) Approve(c echo.Context) error {
 
 	idParam := c.Param("id")

@@ -56,7 +56,16 @@ func (h *cameraHandler) Create(c echo.Context) error {
 	)
 }
 
-// USER + ADMIN - GET ALL
+// GetAll godoc
+// @Summary     Get All Cameras
+// @Description User melihat daftar kamera yang tersedia untuk rental
+// @Tags        User - Camera
+// @Accept      application/json
+// @Produce     application/json
+// @Security    BearerAuth
+// @Success     200 {object} helper.Response
+// @Failure     401 {object} helper.Response
+// @Router      /users/cameras [get]
 func (h *cameraHandler) GetAll(c echo.Context) error {
 
 	response, err := h.cameraUsecase.GetAll()
@@ -78,7 +87,18 @@ func (h *cameraHandler) GetAll(c echo.Context) error {
 	)
 }
 
-// USER + ADMIN - GET BY ID
+// GetByID godoc
+// @Summary     Get Camera By ID
+// @Description User melihat detail kamera berdasarkan ID
+// @Tags        User - Camera
+// @Accept      application/json
+// @Produce     application/json
+// @Security    BearerAuth
+// @Param       id path int64 true "Camera ID"
+// @Success     200 {object} helper.Response
+// @Failure     401 {object} helper.Response
+// @Failure     404 {object} helper.Response
+// @Router      /users/cameras/{id} [get]
 func (h *cameraHandler) GetByID(c echo.Context) error {
 
 	idParam := c.Param("id")
