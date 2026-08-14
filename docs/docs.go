@@ -34,19 +34,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -85,7 +85,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_dto.UpdateRentalOrderStatusRequest"
+                            "$ref": "#/definitions/dto.UpdateRentalOrderStatusRequest"
                         }
                     }
                 ],
@@ -93,31 +93,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -142,19 +142,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -193,7 +193,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_dto.UpdatePaymentStatusRequest"
+                            "$ref": "#/definitions/dto.UpdatePaymentStatusRequest"
                         }
                     }
                 ],
@@ -201,31 +201,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -250,19 +250,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -300,31 +300,93 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/topups/{id}/reject": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Admin menolak permintaan top up user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin - Top Up Reject"
+                ],
+                "summary": "Reject Top Up",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Top Up ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -352,13 +414,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -396,19 +458,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -434,7 +496,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_dto.LoginRequest"
+                            "$ref": "#/definitions/dto.LoginRequest"
                         }
                     }
                 ],
@@ -442,19 +504,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -479,13 +541,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -514,7 +576,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_dto.CreateRentalOrderRequest"
+                            "$ref": "#/definitions/dto.CreateRentalOrderRequest"
                         }
                     }
                 ],
@@ -522,19 +584,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -572,19 +634,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -609,13 +671,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -644,7 +706,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_dto.CreatePaymentRequest"
+                            "$ref": "#/definitions/dto.CreatePaymentRequest"
                         }
                     }
                 ],
@@ -652,19 +714,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -699,19 +761,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -737,7 +799,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_dto.RegisterRequest"
+                            "$ref": "#/definitions/dto.RegisterRequest"
                         }
                     }
                 ],
@@ -745,13 +807,96 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/topup": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "User melihat riwayat top up miliknya",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User - Top Up"
+                ],
+                "summary": "Get My Top Ups",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "User membuat permintaan top up saldo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User - Top Up"
+                ],
+                "summary": "Create Top Up",
+                "parameters": [
+                    {
+                        "description": "Top Up Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateTopUpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -786,102 +931,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/users/topups": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "User melihat riwayat top up miliknya",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User - Top Up"
-                ],
-                "summary": "Get My Top Ups",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "User membuat permintaan top up saldo",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User - Top Up"
-                ],
-                "summary": "Create Top Up",
-                "parameters": [
-                    {
-                        "description": "Top Up Request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_dto.CreateTopUpRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -916,19 +978,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/p2-ip-kartikajls_internal_helper.Response"
+                            "$ref": "#/definitions/helper.Response"
                         }
                     }
                 }
@@ -936,7 +998,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "p2-ip-kartikajls_internal_dto.CreatePaymentRequest": {
+        "dto.CreatePaymentRequest": {
             "type": "object",
             "required": [
                 "payment_method",
@@ -951,7 +1013,7 @@ const docTemplate = `{
                 }
             }
         },
-        "p2-ip-kartikajls_internal_dto.CreateRentalOrderRequest": {
+        "dto.CreateRentalOrderRequest": {
             "type": "object",
             "required": [
                 "camera_id"
@@ -962,7 +1024,7 @@ const docTemplate = `{
                 }
             }
         },
-        "p2-ip-kartikajls_internal_dto.CreateTopUpRequest": {
+        "dto.CreateTopUpRequest": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -970,7 +1032,7 @@ const docTemplate = `{
                 }
             }
         },
-        "p2-ip-kartikajls_internal_dto.LoginRequest": {
+        "dto.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -985,7 +1047,7 @@ const docTemplate = `{
                 }
             }
         },
-        "p2-ip-kartikajls_internal_dto.RegisterRequest": {
+        "dto.RegisterRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1007,7 +1069,7 @@ const docTemplate = `{
                 }
             }
         },
-        "p2-ip-kartikajls_internal_dto.UpdatePaymentStatusRequest": {
+        "dto.UpdatePaymentStatusRequest": {
             "type": "object",
             "required": [
                 "payment_status"
@@ -1018,7 +1080,7 @@ const docTemplate = `{
                 }
             }
         },
-        "p2-ip-kartikajls_internal_dto.UpdateRentalOrderStatusRequest": {
+        "dto.UpdateRentalOrderStatusRequest": {
             "type": "object",
             "required": [
                 "status"
@@ -1029,7 +1091,7 @@ const docTemplate = `{
                 }
             }
         },
-        "p2-ip-kartikajls_internal_helper.Response": {
+        "helper.Response": {
             "type": "object",
             "properties": {
                 "responseCode": {

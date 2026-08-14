@@ -34,7 +34,7 @@ func NewTopUpHandler(
 // @Success     201 {object} helper.Response
 // @Failure     400 {object} helper.Response
 // @Failure     401 {object} helper.Response
-// @Router      /users/topups [post]
+// @Router      /users/topup [post]
 func (h *topUpHandler) Create(c echo.Context) error {
 
 	// Ambil user_id dari JWT Middleware
@@ -114,7 +114,7 @@ func (h *topUpHandler) Create(c echo.Context) error {
 // @Security    BearerAuth
 // @Success     200 {object} helper.Response
 // @Failure     401 {object} helper.Response
-// @Router      /users/topups [get]
+// @Router      /users/topup [get]
 func (h *topUpHandler) GetByUserID(c echo.Context) error {
 
 	// Ambil user_id dari JWT
@@ -298,9 +298,20 @@ func (h *topUpHandler) Approve(c echo.Context) error {
 	)
 }
 
-// ADMIN - REJECT TOP UP
-
-// PUT /admin/topups/:id/reject
+// Reject godoc
+// @Summary      Reject Top Up
+// @Description Admin menolak permintaan top up user
+// @Tags         Admin - Top Up Reject
+// @Accept       application/json
+// @Produce      application/json
+// @Security     BearerAuth
+// @Param        id path int64 true "Top Up ID"
+// @Success      200 {object} helper.Response
+// @Failure      400 {object} helper.Response
+// @Failure      401 {object} helper.Response
+// @Failure      403 {object} helper.Response
+// @Failure      404 {object} helper.Response
+// @Router       /admin/topups/{id}/reject [put]
 func (h *topUpHandler) Reject(c echo.Context) error {
 
 	idParam := c.Param("id")

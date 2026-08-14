@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  p2-ip-kartikajls_internal_dto.CreatePaymentRequest:
+  dto.CreatePaymentRequest:
     properties:
       payment_method:
         type: string
@@ -10,19 +10,19 @@ definitions:
     - payment_method
     - rental_order_id
     type: object
-  p2-ip-kartikajls_internal_dto.CreateRentalOrderRequest:
+  dto.CreateRentalOrderRequest:
     properties:
       camera_id:
         type: integer
     required:
     - camera_id
     type: object
-  p2-ip-kartikajls_internal_dto.CreateTopUpRequest:
+  dto.CreateTopUpRequest:
     properties:
       amount:
         type: number
     type: object
-  p2-ip-kartikajls_internal_dto.LoginRequest:
+  dto.LoginRequest:
     properties:
       email:
         type: string
@@ -32,7 +32,7 @@ definitions:
     - email
     - password
     type: object
-  p2-ip-kartikajls_internal_dto.RegisterRequest:
+  dto.RegisterRequest:
     properties:
       email:
         type: string
@@ -47,21 +47,21 @@ definitions:
     - password
     - username
     type: object
-  p2-ip-kartikajls_internal_dto.UpdatePaymentStatusRequest:
+  dto.UpdatePaymentStatusRequest:
     properties:
       payment_status:
         type: string
     required:
     - payment_status
     type: object
-  p2-ip-kartikajls_internal_dto.UpdateRentalOrderStatusRequest:
+  dto.UpdateRentalOrderStatusRequest:
     properties:
       status:
         type: string
     required:
     - status
     type: object
-  p2-ip-kartikajls_internal_helper.Response:
+  helper.Response:
     properties:
       responseCode:
         type: integer
@@ -88,15 +88,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Get All Orders
@@ -119,30 +119,30 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.UpdateRentalOrderStatusRequest'
+          $ref: '#/definitions/dto.UpdateRentalOrderStatusRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Approve Rental Order
@@ -157,15 +157,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Get All Payments
@@ -188,30 +188,30 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.UpdatePaymentStatusRequest'
+          $ref: '#/definitions/dto.UpdatePaymentStatusRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Approve Payment
@@ -226,15 +226,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Get All Top Ups
@@ -258,28 +258,68 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Approve Top Up
       tags:
       - Admin - Top Up Approve
+  /admin/topups/{id}/reject:
+    put:
+      consumes:
+      - application/json
+      description: Admin menolak permintaan top up user
+      parameters:
+      - description: Top Up ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Reject Top Up
+      tags:
+      - Admin - Top Up Reject
   /users/{id}:
     get:
       description: Mendapatkan data user berdasarkan ID
@@ -296,15 +336,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Get User By ID
@@ -321,11 +361,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Get All Cameras
@@ -349,15 +389,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Get Camera By ID
@@ -374,22 +414,22 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.LoginRequest'
+          $ref: '#/definitions/dto.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       summary: Login User
       tags:
       - User - Login
@@ -402,11 +442,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Get My Orders
@@ -422,22 +462,22 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.CreateRentalOrderRequest'
+          $ref: '#/definitions/dto.CreateRentalOrderRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Create Rental Order
@@ -461,15 +501,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Get Order By ID
@@ -484,11 +524,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Get My Payments
@@ -504,22 +544,22 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.CreatePaymentRequest'
+          $ref: '#/definitions/dto.CreatePaymentRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Create Payment
@@ -541,15 +581,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Get My Payment By ID
@@ -566,21 +606,73 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.RegisterRequest'
+          $ref: '#/definitions/dto.RegisterRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       summary: Register User
       tags:
       - User - Register
+  /users/topup:
+    get:
+      consumes:
+      - application/json
+      description: User melihat riwayat top up miliknya
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Get My Top Ups
+      tags:
+      - User - Top Up
+    post:
+      consumes:
+      - application/json
+      description: User membuat permintaan top up saldo
+      parameters:
+      - description: Top Up Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateTopUpRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.Response'
+      security:
+      - BearerAuth: []
+      summary: Create Top Up
+      tags:
+      - User - Top Up
   /users/topup/{id}:
     get:
       description: Mendapatkan detail top up berdasarkan ID
@@ -597,70 +689,18 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
+            $ref: '#/definitions/helper.Response'
       security:
       - BearerAuth: []
       summary: Get Top Up By ID
-      tags:
-      - User - Top Up
-  /users/topups:
-    get:
-      consumes:
-      - application/json
-      description: User melihat riwayat top up miliknya
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
-      security:
-      - BearerAuth: []
-      summary: Get My Top Ups
-      tags:
-      - User - Top Up
-    post:
-      consumes:
-      - application/json
-      description: User membuat permintaan top up saldo
-      parameters:
-      - description: Top Up Request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/p2-ip-kartikajls_internal_dto.CreateTopUpRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/p2-ip-kartikajls_internal_helper.Response'
-      security:
-      - BearerAuth: []
-      summary: Create Top Up
       tags:
       - User - Top Up
 securityDefinitions:
