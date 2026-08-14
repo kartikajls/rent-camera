@@ -10,6 +10,7 @@ import (
 	"p2-ip-kartikajls/internal/handler"
 	"p2-ip-kartikajls/internal/repository"
 	"p2-ip-kartikajls/internal/router"
+	"p2-ip-kartikajls/internal/service"
 	"p2-ip-kartikajls/internal/usecase"
 )
 
@@ -26,6 +27,9 @@ func main() {
 		log.Fatal("failed to connect database:", err)
 	}
 
+	// WA SERVICE
+	whatsappService := service.NewWhatsAppService()
+
 	// Repository
 	userRepository := repository.NewUserRepository(db)
 	topUpRepository := repository.NewTopUpRepository(db)
@@ -36,11 +40,13 @@ func main() {
 
 	// Usecase
 	userUsecase := usecase.NewUserUsecase(userRepository)
-	topUpUsecase := usecase.NewTopUpUsecase(topUpRepository, userRepository)
+	topUpUsecase := usecase.NewTopUpUsecase(topUpRepository, userRepository, whatsappService)
 	cameraUsecase := usecase.NewCameraUsecase(cameraRepository)
-	orderUsecase := usecase.NewRentalOrderUsecase(orderRepository)
+	orderUsecase := usecase.NewRentalOrderUsecase(orderRepository, cameraRepository, userRepository, whatsappService)
 	orderDetailsUsecase := usecase.NewRentalOrderDetailUsecase(orderDetailsRepository)
-	paymentUsecase := usecase.NewPaymentUsecase(paymentRepository)
+	paymentUsecase := usecase.NewPaymentUsecase(paymentRepository, userRepository, orderRepository, whatsappService)
+	// Usecase khusus testing WhatsApp
+	wasenderUsecase := usecase.NewWasenderUsecase()
 
 	// Handler
 	userHandler := handler.NewUserHandler(userUsecase)
@@ -49,6 +55,7 @@ func main() {
 	orderHandler := handler.NewRentalOrderHandler(orderUsecase)
 	orderDetailsHandler := handler.NewRentalOrderDetailHandler(orderDetailsUsecase)
 	paymentHandler := handler.NewPaymentHandler(paymentUsecase)
+	wasenderHandler := handler.NewWasenderHandler(wasenderUsecase)
 
 	// Echo
 	e := echo.New()
@@ -62,6 +69,7 @@ func main() {
 		orderHandler,
 		orderDetailsHandler,
 		paymentHandler,
+		wasenderHandler,
 	)
 
 	// Start Server

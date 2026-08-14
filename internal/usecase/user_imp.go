@@ -52,6 +52,7 @@ func (u *userUsecase) Register(request dto.RegisterRequest) (*dto.RegisterRespon
 		Username:      request.Username,
 		Email:         request.Email,
 		Password:      request.Password,
+		Phone:         request.Phone,
 		Role:          "user",
 		DepositAmount: 0,
 	}

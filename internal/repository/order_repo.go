@@ -5,7 +5,7 @@ import (
 )
 
 type RentalOrderRepository interface {
-	CreateOrder(userID int64, req dto.CreateRentalOrderRequest) (*dto.RentalOrderResponse, error)
+	CreateOrder(userID int64, cameraID int64, totalAmount float64) (*dto.RentalOrderResponse, error)
 	GetOrderByID(orderID int64) (*dto.RentalOrderResponse, error)
 	GetOrdersByUserID(userID int64) ([]dto.RentalOrderResponse, error)
 	GetAllOrders() ([]dto.RentalOrderResponse, error)

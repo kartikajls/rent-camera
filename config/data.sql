@@ -1,5 +1,5 @@
-INSERT INTO users (username,email,password,deposit_amount,role) VALUES 
-('admin','admin@example.com','admin123',0,'admin');
+INSERT INTO users (username,email,password,phone, deposit_amount,role) VALUES 
+('admin','admin@example.com','admin123',0,"085646363256",'admin');
 
 INSERT INTO cameras (name,rental_cost,category) VALUES
 ('Canon EOS R5', 500000.00, 'Mirrorless'),

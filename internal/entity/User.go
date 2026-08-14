@@ -7,6 +7,7 @@ type User struct {
 	Username      string    `gorm:"type:varchar(100);not null"`
 	Email         string    `gorm:"type:varchar(255);unique;not null"`
 	Password      string    `gorm:"type:text;not null"`
+	Phone         string    `gorm:"type:varchar(20);unique;not null"`
 	Role          string    `gorm:"type:varchar(20);not null;default:'user'"`
 	DepositAmount float64   `gorm:"type:numeric(15,2);not null;default:0"`
 	CreatedAt     time.Time `gorm:"column:created_at;autoCreateTime"`

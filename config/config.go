@@ -44,10 +44,10 @@ func GetJWTSecret() string {
 	return os.Getenv("JWT_SECRET")
 }
 
-func GetBrevoAPIKey() string {
-	return os.Getenv("BREVO_API_KEY")
+func GetWasenderAPIKey() string {
+	return os.Getenv("WASENDER_API_KEY")
 }
 
-func GetEmailFrom() string {
-	return os.Getenv("EMAIL_FROM")
+func GetWasenderAPIURL() string {
+	return os.Getenv("WASENDER_API_URL")
 }

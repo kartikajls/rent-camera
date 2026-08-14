@@ -19,19 +19,19 @@ func NewRentalOrderRepository(db *gorm.DB) RentalOrderRepository {
 	}
 }
 
-func (r *rentalOrderRepository) CreateOrder(userID int64, req dto.CreateRentalOrderRequest) (*dto.RentalOrderResponse, error) {
+func (r *rentalOrderRepository) CreateOrder(userID int64, cameraID int64, totalAmount float64) (*dto.RentalOrderResponse, error) {
 
 	order := entity.RentalOrder{
 		UserID:      userID,
-		TotalAmount: req.TotalAmount,
-		Status:      "PENDING",
+		TotalAmount: totalAmount,
+		Status:      "pending",
 	}
 
 	if err := r.db.Create(&order).Error; err != nil {
 		return nil, err
 	}
 
-	response := &dto.RentalOrderResponse{
+	return &dto.RentalOrderResponse{
 		RentalOrderID: order.RentalOrderID,
 		UserID:        order.UserID,
 		OrderDate:     order.OrderDate,
@@ -39,9 +39,7 @@ func (r *rentalOrderRepository) CreateOrder(userID int64, req dto.CreateRentalOr
 		Status:        order.Status,
 		CreatedAt:     order.CreatedAt,
 		UpdatedAt:     order.UpdatedAt,
-	}
-
-	return response, nil
+	}, nil
 }
 
 func (r *rentalOrderRepository) GetOrderByID(orderID int64) (*dto.RentalOrderResponse, error) {

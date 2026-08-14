@@ -6,6 +6,7 @@ CREATE TABLE users (
     username VARCHAR(100) NOT NULL UNIQUE,
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) UNIQUE NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'user',
     deposit_amount NUMERIC(15,2) NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -55,7 +56,7 @@ CREATE TABLE rental_order_details (
 );
 
 
--- 
+
 ALTER TABLE rental_order_details
 ADD CONSTRAINT fk_rental_detail_order
 FOREIGN KEY (rental_order_id)
@@ -102,5 +103,7 @@ REFERENCES users(user_id)
 ON DELETE CASCADE;
 
 
+
 select * from users u ;
 select * from top_ups tu ;
+select * from cameras c ;

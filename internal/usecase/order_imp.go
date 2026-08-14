@@ -1,29 +1,96 @@
 package usecase
 
 import (
+	"errors"
+	"fmt"
 	"p2-ip-kartikajls/internal/dto"
 	"p2-ip-kartikajls/internal/repository"
+	"p2-ip-kartikajls/internal/service"
 )
 
 type rentalOrderUsecase struct {
 	rentalOrderRepository repository.RentalOrderRepository
+	cameraRepository      repository.CameraRepository
+	userRepository        repository.UserRepository
+	whatsappService       service.WhatsAppService
 }
 
 func NewRentalOrderUsecase(
 	rentalOrderRepository repository.RentalOrderRepository,
+	cameraRepository repository.CameraRepository,
+	userRepository repository.UserRepository,
+	whatsappService service.WhatsAppService,
 ) RentalOrderUsecase {
 
 	return &rentalOrderUsecase{
 		rentalOrderRepository: rentalOrderRepository,
+		cameraRepository:      cameraRepository,
+		userRepository:        userRepository,
+		whatsappService:       whatsappService,
 	}
 }
 
 func (u *rentalOrderUsecase) CreateOrder(userID int64, req dto.CreateRentalOrderRequest) (*dto.RentalOrderResponse, error) {
 
-	return u.rentalOrderRepository.CreateOrder(
+	if userID <= 0 {
+		return nil, errors.New("invalid user id")
+	}
+
+	if req.CameraID <= 0 {
+		return nil, errors.New("invalid camera id")
+	}
+
+	camera, err := u.cameraRepository.GetByID(req.CameraID)
+	if err != nil {
+		return nil, errors.New("camera not found")
+	}
+
+	if !camera.Available {
+		return nil, errors.New("camera is not available")
+	}
+
+	totalAmount := camera.RentalCost
+
+	order, err := u.rentalOrderRepository.CreateOrder(
 		userID,
-		req,
+		req.CameraID,
+		totalAmount,
 	)
+	if err != nil {
+		return nil, err
+	}
+
+	// WhatsApp notification
+	user, err := u.userRepository.GetByID(userID)
+	if err == nil {
+
+		message := fmt.Sprintf(
+			"Halo %s,\n\n"+
+				"Order rental kamera kamu berhasil dibuat.\n\n"+
+				"Order ID: #%d\n"+
+				"Kamera: %s\n"+
+				"Total: Rp%.2f\n"+
+				"Status: %s\n\n"+
+				"Rent Camera",
+			user.Username,
+			order.RentalOrderID,
+			camera.Name,
+			order.TotalAmount,
+			order.Status,
+		)
+
+		if err := u.whatsappService.Send(
+			user.Phone,
+			message,
+		); err != nil {
+			fmt.Println(
+				"WhatsApp notification failed:",
+				err,
+			)
+		}
+	}
+
+	return order, nil
 }
 
 func (u *rentalOrderUsecase) GetOrderByID(orderID int64) (*dto.RentalOrderResponse, error) {

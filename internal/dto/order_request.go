@@ -1,7 +1,7 @@
 package dto
 
 type CreateRentalOrderRequest struct {
-	TotalAmount float64 `json:"total_amount" validate:"required,min=0"`
+	CameraID int64 `json:"camera_id" validate:"required"`
 }
 
 type UpdateRentalOrderStatusRequest struct {

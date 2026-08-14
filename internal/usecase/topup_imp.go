@@ -2,25 +2,30 @@ package usecase
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"p2-ip-kartikajls/internal/dto"
 	"p2-ip-kartikajls/internal/entity"
 	"p2-ip-kartikajls/internal/repository"
+	"p2-ip-kartikajls/internal/service"
 )
 
 type topUpUsecase struct {
 	topUpRepository repository.TopUpRepository
 	userRepository  repository.UserRepository
+	whatsappService service.WhatsAppService
 }
 
 func NewTopUpUsecase(
 	topUpRepository repository.TopUpRepository,
 	userRepository repository.UserRepository,
+	whatsappService service.WhatsAppService,
 ) TopUpUsecase {
 	return &topUpUsecase{
 		topUpRepository: topUpRepository,
 		userRepository:  userRepository,
+		whatsappService: whatsappService,
 	}
 }
 
@@ -44,6 +49,31 @@ func (u *topUpUsecase) Create(userID int64, request dto.CreateTopUpRequest) (*dt
 	err := u.topUpRepository.Create(topUp)
 	if err != nil {
 		return nil, err
+	}
+
+	user, err := u.userRepository.GetByID(topUp.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	message := fmt.Sprintf(
+		"Halo %s,\n\n"+
+			"Permintaan top up kamu berhasil dibuat.\n\n"+
+			"Top Up ID: #%d\n"+
+			"Nominal: Rp%.2f\n"+
+			"Status: Pending\n\n"+
+			"Silakan menunggu konfirmasi admin.\n\n"+
+			"Rent Camera",
+		user.Username,
+		topUp.TopUpID,
+		topUp.Amount,
+	)
+
+	if err := u.whatsappService.Send(
+		user.Phone,
+		message,
+	); err != nil {
+		fmt.Println("WhatsApp notification failed:", err)
 	}
 
 	return &dto.TopUpResponse{
@@ -174,7 +204,6 @@ func (u *topUpUsecase) Approve(id int64) error {
 
 	// Cari top up
 	topUp, err := u.topUpRepository.GetByID(id)
-
 	if err != nil {
 		return errors.New("top up not found")
 	}
@@ -188,7 +217,6 @@ func (u *topUpUsecase) Approve(id int64) error {
 
 	// Cari user
 	user, err := u.userRepository.GetByID(topUp.UserID)
-
 	if err != nil {
 		return errors.New("user not found")
 	}
@@ -198,7 +226,6 @@ func (u *topUpUsecase) Approve(id int64) error {
 
 	// Update saldo user
 	err = u.userRepository.Update(user)
-
 	if err != nil {
 		return err
 	}
@@ -208,9 +235,33 @@ func (u *topUpUsecase) Approve(id int64) error {
 		id,
 		"success",
 	)
-
 	if err != nil {
 		return err
+	}
+
+	// WHATSAPP NOTIFICATION
+	message := fmt.Sprintf(
+		"Halo %s,\n\n"+
+			"Top up kamu telah berhasil disetujui.\n\n"+
+			"Top Up ID: #%d\n"+
+			"Nominal: Rp%.2f\n"+
+			"Status: Success\n"+
+			"Saldo sekarang: Rp%.2f\n\n"+
+			"Terima kasih telah menggunakan Rent Camera.",
+		user.Username,
+		topUp.TopUpID,
+		topUp.Amount,
+		user.DepositAmount,
+	)
+
+	if err := u.whatsappService.Send(
+		user.Phone,
+		message,
+	); err != nil {
+		fmt.Println(
+			"WhatsApp notification failed:",
+			err,
+		)
 	}
 
 	return nil
@@ -225,26 +276,58 @@ func (u *topUpUsecase) Reject(id int64) error {
 
 	// Cari top up
 	topUp, err := u.topUpRepository.GetByID(id)
-
 	if err != nil {
 		return errors.New("top up not found")
 	}
 
-	// Hanya pending yang boleh ditolak
+	// Hanya pending yang boleh di-reject
 	if topUp.Status != "pending" {
 		return errors.New(
 			"top up has already been processed",
 		)
 	}
 
-	// Ubah status menjadi failed
+	// Cari user
+	user, err := u.userRepository.GetByID(topUp.UserID)
+	if err != nil {
+		return errors.New("user not found")
+	}
+
+	// Ubah status top up menjadi rejected
 	err = u.topUpRepository.UpdateStatus(
 		id,
-		"failed",
+		"rejected",
 	)
-
 	if err != nil {
 		return err
+	}
+
+	// =========================================
+	// WHATSAPP NOTIFICATION
+	// =========================================
+
+	message := fmt.Sprintf(
+		"Halo %s,\n\n"+
+			"Top up kamu ditolak.\n\n"+
+			"Top Up ID: #%d\n"+
+			"Nominal: Rp%.2f\n"+
+			"Status: Rejected\n\n"+
+			"Silakan periksa kembali data top up kamu "+
+			"atau hubungi admin.\n\n"+
+			"Rent Camera",
+		user.Username,
+		topUp.TopUpID,
+		topUp.Amount,
+	)
+
+	if err := u.whatsappService.Send(
+		user.Phone,
+		message,
+	); err != nil {
+		fmt.Println(
+			"WhatsApp notification failed:",
+			err,
+		)
 	}
 
 	return nil

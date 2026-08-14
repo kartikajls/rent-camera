@@ -15,19 +15,23 @@ func SetupRoutes(
 	rentalOrderHandler handler.RentalOrderHandler,
 	rentalOrderDetailHandler handler.RentalOrderDetailHandler,
 	paymentHandler handler.PaymentHandler,
+	wasenderHandler *handler.WasenderHandler,
 ) {
 
-	// =========================================
 	// PUBLIC ROUTES
-	// =========================================
-
 	e.POST("/users/register", userHandler.Register)
 	e.POST("/users/login", userHandler.Login)
 
-	// =========================================
-	// USER ROUTES
-	// =========================================
+	// WA SENDER ROUTES
+	wa := e.Group("/wa")
+	wa.Use(
+		middleware.JWTMiddleware,
+		middleware.RoleMiddleware("user", "admin"),
+	)
 
+	wa.POST("/send", wasenderHandler.SendMessage)
+
+	// USER ROUTES
 	user := e.Group("/users")
 
 	user.Use(
@@ -61,10 +65,8 @@ func SetupRoutes(
 	user.GET("/payments", paymentHandler.GetMyPayments)
 	user.GET("/payments/:payment_id", paymentHandler.GetMyPaymentByID)
 
-	// =========================================
+	// ----------------------------------------------------------------------------------------------
 	// ADMIN ROUTES
-	// =========================================
-
 	admin := e.Group("/admin")
 
 	admin.Use(
