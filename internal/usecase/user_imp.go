@@ -3,6 +3,8 @@ package usecase
 import (
 	"errors"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"p2-ip-kartikajls/internal/dto"
 	"p2-ip-kartikajls/internal/entity"
 	"p2-ip-kartikajls/internal/helper"
@@ -47,11 +49,21 @@ func (u *userUsecase) Register(request dto.RegisterRequest) (*dto.RegisterRespon
 		return nil, errors.New("email already registered")
 	}
 
+	// Hash password
+	hashedPassword, err := bcrypt.GenerateFromPassword(
+		[]byte(request.Password),
+		bcrypt.DefaultCost,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
 	// Buat entity user
 	user := &entity.User{
 		Username:      request.Username,
 		Email:         request.Email,
-		Password:      request.Password,
+		Password:      string(hashedPassword),
 		Phone:         request.Phone,
 		Role:          "user",
 		DepositAmount: 0,
@@ -86,7 +98,13 @@ func (u *userUsecase) Login(request dto.LoginRequest) (*dto.LoginResponse, error
 		)
 	}
 
-	if user.Password != request.Password {
+	// Compare password dengan hash di database
+	err = bcrypt.CompareHashAndPassword(
+		[]byte(user.Password),
+		[]byte(request.Password),
+	)
+
+	if err != nil {
 		return nil, errors.New(
 			"email or password is incorrect",
 		)
